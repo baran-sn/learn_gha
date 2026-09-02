@@ -33,9 +33,24 @@ jobs:
 
       - name: Accessing output from another step
         run: |
-          echo "    version  :" ${{ steps.meta.outputs.version }};
-          echo "    timestamp:" ${{ steps.meta.outputs.timestamp }}
-          echo "    name     :" ${{ steps.data.outputs.name }}
-          echo "    age      :" ${{ steps.data.outputs.age }}
-       
+          echo "    Step version  :" ${{ steps.meta.outputs.version }};
+          echo "    Step timestamp:" ${{ steps.meta.outputs.timestamp }}
+          echo "    Step name     :" ${{ steps.data.outputs.name }}
+          echo "    Step age      :" ${{ steps.data.outputs.age }}
+  
+  consumer:
+    needs: produce
+    runs-on: ubuntu-latest
+    steps:
+      - name: Accessing output from another Job
+        run : |
+          echo "    Job version  :" ${{ needs.produce.outputs.version }};
+          echo "    Job timestamp:" ${{ needs.produce.outputs.timestamp }}
+          echo "    Job name     :" ${{ needs.produce.outputs.name }}
+          echo "    Job age      :" ${{ needs.produce.outputs.age }}
+  
+          
+      
+  
+    
   
