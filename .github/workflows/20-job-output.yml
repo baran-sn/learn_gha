@@ -11,13 +11,14 @@ jobs:
       version  : ${{ steps.meta.outputs.version }}
       timestamp: ${{ steps.meta.outputs.timestamp }}
       name     : ${{ steps.data.outputs.name }}
+      age      : ${{ steps.data.outputs.age }}
 
     steps:
       # STEP 1 of the chain: write to the special $GITHUB_OUTPUT file.
       - name: Compute some metadata
         id: meta                       # <- the id is mandatory
         run: |
-          VERSION="1.4.${{ github.run_number }}"
+          VERSION="2.1.${{ github.run_number }}"
           echo "version=$VERSION"            >> "$GITHUB_OUTPUT"
           echo "timestamp=$(date -u +%FT%TZ)" >> "$GITHUB_OUTPUT"
           echo "Computed version $VERSION"
@@ -29,3 +30,12 @@ jobs:
           AGE="40"
           echo "name=$NAME"  >> "$GITHUB_OUTPUT"
           echo "age=$AGE"    >> "$GITHUB_OUTPUT"
+
+      - name: Accessing output from another step
+        run: |
+          echo "    version  :" ${{ steps.meta.outputs.version }};
+          echo "    timestamp:" ${{ steps.meta.outputs.timestamp }}
+          echo "    name     :" ${{ steps.data.outputs.name }}
+          echo "    age      :" ${{ steps.data.outputs.age }}
+       
+  
