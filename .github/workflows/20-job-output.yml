@@ -8,9 +8,9 @@ jobs:
 
     # STEP 2 of the chain: promote step outputs to JOB outputs.
     outputs:
-      version:   ${{ steps.meta.outputs.version }}
+      version  : ${{ steps.meta.outputs.version }}
       timestamp: ${{ steps.meta.outputs.timestamp }}
-      changelog: ${{ steps.notes.outputs.changelog }}
+      name     : ${{ steps.data.outputs.name }}
 
     steps:
       # STEP 1 of the chain: write to the special $GITHUB_OUTPUT file.
@@ -21,3 +21,11 @@ jobs:
           echo "version=$VERSION"            >> "$GITHUB_OUTPUT"
           echo "timestamp=$(date -u +%FT%TZ)" >> "$GITHUB_OUTPUT"
           echo "Computed version $VERSION"
+
+      - name: Compute some metadata2
+        id: data                       # <- the id is mandatory
+        run: |
+          NAME="Test"
+          AGE="40"
+          echo "name=$NAME"  >> "$GITHUB_OUTPUT"
+          echo "age=$AGE"    >> "$GITHUB_OUTPUT"
